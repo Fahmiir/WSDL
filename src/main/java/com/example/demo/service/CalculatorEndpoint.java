@@ -12,12 +12,12 @@ public class CalculatorEndpoint {
 
     private static final String NAMESPACE_URI = "http://www.example.com/calculator";
 
-    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "AddRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addRequest")
     @ResponsePayload
     public AddResponse add(@RequestPayload AddRequest request) {
         int sum = request.getNum1() + request.getNum2();
         AddResponse response = new AddResponse();
-        response.setSum(sum);
+        response.setResult(sum);
         return response;
     }
 }

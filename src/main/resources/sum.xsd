@@ -1,9 +1,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-           targetNamespace="http://example.com/soapws"
-           xmlns="http://example.com/soapws"
+           targetNamespace="http://www.example.com/calculator"
+           xmlns="http://www.example.com/calculator"
            elementFormDefault="qualified">
 
-    <xs:element name="AddRequest">
+    <xs:element name="addRequest">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="num1" type="xs:int"/>
@@ -12,7 +12,7 @@
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="AddResponse">
+    <xs:element name="addResponse">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="result" type="xs:int"/>

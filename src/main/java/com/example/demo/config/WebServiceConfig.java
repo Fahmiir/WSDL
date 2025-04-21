@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.config.annotation.EnableWs;
+import org.springframework.ws.config.annotation.WsConfigurerAdapter;
 import org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping;
 import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition;
@@ -19,7 +20,7 @@ import org.springframework.context.ApplicationContext;
 
 @Configuration
 @EnableWs
-public class WebServiceConfig{
+public class WebServiceConfig extends WsConfigurerAdapter {
 
 //    @Bean
 //    public MessageDispatcherServlet messageDispatcherServlet() {
@@ -35,7 +36,7 @@ public class WebServiceConfig{
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setTransformWsdlLocations(true);  // Pastikan WSDL dapat dihasilkan
         servlet.setApplicationContext(applicationContext);
-        ServletRegistrationBean<MessageDispatcherServlet> registrationBean = new ServletRegistrationBean<>(servlet, "/services/*");
+        ServletRegistrationBean<MessageDispatcherServlet> registrationBean = new ServletRegistrationBean<>(servlet, "/ws/*");
         registrationBean.setName("messageDispatcherServlet");
         return registrationBean;
     }
@@ -50,7 +51,8 @@ public class WebServiceConfig{
     @Bean
     public Jaxb2Marshaller marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan("com.example.demo.dto");
+ //       marshaller.setPackagesToScan("com.example.demo.dto");
+        marshaller.setContextPath("com.example.demo.dto");
         return marshaller;
     }
 
