@@ -15,7 +15,7 @@ public class CalculatorEndpoint {
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "addRequest")
     @ResponsePayload
     public AddResponse add(@RequestPayload AddRequest request) {
-        int sum = request.getNum1() + request.getNum2();
+        int sum = request.getNum1() + request.getNum2()+request.getNum3();
         AddResponse response = new AddResponse();
         response.setResult(sum);
         return response;
