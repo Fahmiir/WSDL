@@ -1,10 +1,12 @@
 package com.example.demo.config;
 
 import com.example.demo.service.CalculatorEndpoint;
+import com.example.demo.service.SubEndpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.config.annotation.EnableWs;
 import org.springframework.ws.config.annotation.WsConfigurerAdapter;
@@ -63,6 +65,11 @@ public class WebServiceConfig extends WsConfigurerAdapter {
     }
 
     @Bean
+    public SubEndpoint subEndpoint() {
+        return new SubEndpoint();
+    }
+
+    @Bean
     public XsdSchema sumSchema() {
         return new SimpleXsdSchema(new org.springframework.core.io.ClassPathResource("sum.xsd"));
     }
@@ -75,6 +82,29 @@ public class WebServiceConfig extends WsConfigurerAdapter {
         wsdl11Definition.setTargetNamespace("http://example.com/soapws");
         wsdl11Definition.setSchema(sumSchema);
         return wsdl11Definition;
+    }
+
+    @Bean
+    public XsdSchema subtractionSchema() {
+        return new SimpleXsdSchema(new org.springframework.core.io.ClassPathResource("sub.xsd"));
+    }
+
+    @Bean(name = "subService")
+    public DefaultWsdl11Definition subServiceWsdl(XsdSchema subtractionSchema) {
+        DefaultWsdl11Definition wsdl = new DefaultWsdl11Definition();
+        wsdl.setPortTypeName("SubPort");
+        wsdl.setLocationUri("/ws");
+        wsdl.setTargetNamespace("http://example.com/calculator2");
+        wsdl.setSchema(subtractionSchema);
+        return wsdl;
+    }
+
+    @Bean
+    public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet2(ApplicationContext applicationContext) {
+        MessageDispatcherServlet servlet = new MessageDispatcherServlet();
+        servlet.setTransformWsdlLocations(true);
+        servlet.setApplicationContext(applicationContext);
+        return new ServletRegistrationBean<>(servlet, "/ws2/*");
     }
 
 }
